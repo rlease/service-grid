@@ -6,9 +6,10 @@ class App extends Component {
       return { x, y };
     };
 
-    const Hexagon = ({ size, sides = 6 }) => {
+    const Hexagon = ({ size }) => {
       // TODO: Add offsets to this so we can create more than one hex
       const root2 = Math.sqrt(2);
+      // TODO: Rotate the polygon so the point is at the top
       let points = [
         Point(0, (size * root2) / 2),
         Point(size / root2, size * root2),
