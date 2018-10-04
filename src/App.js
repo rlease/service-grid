@@ -30,11 +30,9 @@ class App extends Component {
         for (let j = isOdd ? 1 : 0; j < columns; j++) {
           const xSpacing = (midWidth * 2 + spacing) * j;
           const offsetx = isOdd ? xSpacing - midWidth - spacing / 2 : xSpacing;
-          const offsety = (size * 2 + spacing) * i;
+          const offsety = (size + size/2 + spacing) * i;
           const hexPoints = Hexagon(size, offsetx, offsety);
 
-          // TODO: The offsety looks goofy, presumably because of the viewBox.
-          // For tomorrow: Need to look into svg coordinate system again.
           grid.push(
             <polygon
               key={`${i},${j}`}
@@ -48,8 +46,8 @@ class App extends Component {
     }
 
     return (
-      <svg viewBox="0 0 100 100">
-        <HexagonGrid size={5} rows={3} columns={6} spacing={2} />
+      <svg width="400" height="400">
+        <HexagonGrid size={50} rows={3} columns={6} spacing={2} />
       </svg>
     );
   }
