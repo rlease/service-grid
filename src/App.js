@@ -8,15 +8,15 @@ class App extends Component {
 
     const Hexagon = ({ size }) => {
       // TODO: Add offsets to this so we can create more than one hex
-      const root2 = Math.sqrt(2);
-      // TODO: Rotate the polygon so the point is at the top
+      const midWidth = size * Math.cos(Math.PI / 6);
+      const height = Math.sqrt((size * size) - (midWidth * midWidth));
       let points = [
-        Point(0, (size * root2) / 2),
-        Point(size / root2, size * root2),
-        Point(size + size / root2, size * root2),
-        Point(size + (size * 2) / root2, (size * root2) / 2),
-        Point(size + size / root2, 0),
-        Point(size / root2, 0)
+        Point(midWidth, 0),
+        Point(midWidth * 2, height),
+        Point(midWidth * 2, height + size),
+        Point(midWidth, height * 2 + size),
+        Point(0, height + size),
+        Point(0, height)
       ];
 
       return (
