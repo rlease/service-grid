@@ -42,14 +42,10 @@ class App extends Component {
         }
       }
 
-      return grid;
+      return <svg viewBox="0 0 100 100">{grid}</svg>
     }
 
-    return (
-      <svg width="400" height="400">
-        <HexagonGrid size={50} rows={3} columns={6} spacing={2} />
-      </svg>
-    );
+    return <HexagonGrid size={5} rows={3} columns={6} spacing={2} />;
   }
 }
 
