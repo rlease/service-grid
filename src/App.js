@@ -2,21 +2,18 @@ import React, { Component } from "react";
 
 class App extends Component {
   render() {
-    const Point = (x, y) => {
-      return { x, y };
-    };
+    const Point = (x, y) => ({ x, y });
 
-    const Hexagon = ({ size }) => {
-      // TODO: Add offsets to this so we can create more than one hex
+    const Hexagon = ({ size, offsetx = 0, offsety = 0 }) => {
       const midWidth = size * Math.cos(Math.PI / 6);
       const height = Math.sqrt((size * size) - (midWidth * midWidth));
       let points = [
-        Point(midWidth, 0),
-        Point(midWidth * 2, height),
-        Point(midWidth * 2, height + size),
-        Point(midWidth, height * 2 + size),
-        Point(0, height + size),
-        Point(0, height)
+        Point(offsetx + midWidth, offsety),
+        Point(offsetx + midWidth * 2, offsety + height),
+        Point(offsetx + midWidth * 2, offsety + height + size),
+        Point(offsetx + midWidth, offsety + height * 2 + size),
+        Point(offsetx, offsety + height + size),
+        Point(offsetx, offsety + height)
       ];
 
       return (
@@ -29,6 +26,8 @@ class App extends Component {
     return (
       <svg viewBox="0 0 100 100">
         <Hexagon size={5} />
+        <Hexagon size={5} offsetx={10} />
+        <Hexagon size={5} offsetx={5} offsety={10} />
       </svg>
     );
   }
