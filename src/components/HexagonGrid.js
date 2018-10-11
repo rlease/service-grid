@@ -1,4 +1,5 @@
 import React from 'react';
+import './hexagonGrid.css';
 
 const Point = (x, y) => ({ x, y });
 
@@ -15,9 +16,9 @@ const Hexagon = ( size, midWidth, height, offsetx = 0, offsety = 0 ) => {
 };
 
 // TODO List
-// 1) Add mouseover states
-// 2) Add color selection
-// 3) Add ability to show routes betweeen hexes
+
+// Add color selection
+// Add ability to show routes betweeen hexes
 // TODO: Add some testing to this.
 const HexagonGrid = ({ size, rows, columns, spacing }) => {
   let grid = [];
@@ -37,6 +38,7 @@ const HexagonGrid = ({ size, rows, columns, spacing }) => {
       grid.push(
         <polygon
           key={`${i},${j}`}
+          className="hex"
           points={hexPoints.map(point => `${point.x},${point.y}`).join(" ")}
         />
       );

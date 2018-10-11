@@ -1,0 +1,8 @@
+.hex {
+	fill: green;
+}
+
+.hex:hover {
+	stroke: purple;
+	stroke-width: 0.5;
+}
