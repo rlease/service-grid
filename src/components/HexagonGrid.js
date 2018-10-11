@@ -4,7 +4,8 @@ import './hexagonGrid.css';
 const Point = (x, y) => ({ x, y });
 
 // Hexagons are always the same polygon, just shifted
-const Hexagon = ( size, midWidth, height, offsetx = 0, offsety = 0 ) => {
+// TODO: Add testing (size = 0, size is negative, midWidth = 0, etc.)
+const Hexagon = (size, midWidth, height, offsetx = 0, offsety = 0) => {
   return [
     Point(offsetx + midWidth, offsety),
     Point(offsetx + midWidth * 2, offsety + height),
@@ -15,8 +16,21 @@ const Hexagon = ( size, midWidth, height, offsetx = 0, offsety = 0 ) => {
   ];
 };
 
-// TODO List
+// Test cases:
+// horizontally adjacent hexes
+// vertically adjacent hexes
+// hexes in the same column but separated by one row
+// hexes along the outside of the grid (should keep path inside "border")
+// ignore connecting hexes in separate grids for the meantime
+const connect = (startHex, endHex) => {
+  // draw path consisting of these three types of segments
+  // vertical edge of hex
+  // bottom left/top right edge of hex
+  // bottom right/top left edge of hex
+}
 
+// TODO List
+// Add ability to add text to hexes
 // Add ability to show routes betweeen hexes
 // TODO: Add some testing to this.
 const HexagonGrid = ({ size, rows, columns, spacing }) => {
