@@ -17,7 +17,6 @@ const Hexagon = ( size, midWidth, height, offsetx = 0, offsety = 0 ) => {
 
 // TODO List
 
-// Add color selection
 // Add ability to show routes betweeen hexes
 // TODO: Add some testing to this.
 const HexagonGrid = ({ size, rows, columns, spacing }) => {
