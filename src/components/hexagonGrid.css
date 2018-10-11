@@ -1,8 +1,22 @@
 .hex {
-	fill: green;
+	font-size: 12px;
+	color: white;
 }
 
 .hex:hover {
-	stroke: purple;
+	stroke: black;
 	stroke-width: 0.5;
+}
+
+.normal {
+	fill: green;
+}
+
+.error {
+	fill: red;
+}
+
+.warning {
+	fill: yellow;
+	color: black;
 }

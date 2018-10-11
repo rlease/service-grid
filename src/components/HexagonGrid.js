@@ -24,6 +24,12 @@ const HexagonGrid = ({ size, rows, columns, spacing }) => {
   let grid = [];
   const midWidth = size * Math.cos(Math.PI / 6);
   const height = size / 2;
+  // Uncomment to test colors
+  // const colors = {
+  //   1: 'normal',
+  //   2: 'warning',
+  //   3: 'error'
+  // };
 
   for (let i = 0; i < rows; i++) {
     const isOdd = i % 2 === 1;
@@ -35,10 +41,15 @@ const HexagonGrid = ({ size, rows, columns, spacing }) => {
       const offsetx = isOdd ? xSpacing - midWidth - spacing / 2 : xSpacing;
       const hexPoints = Hexagon(size, midWidth, height, offsetx, offsety);
 
+      // Uncomment to test colors
+      // Random number between 1 and 3
+      // const randColor = Math.floor(Math.random() * 3 + 1);
+
       grid.push(
         <polygon
           key={`${i},${j}`}
-          className="hex"
+          //className={`hex ${colors[randColor]}`}
+          className="hex normal"
           points={hexPoints.map(point => `${point.x},${point.y}`).join(" ")}
         />
       );
