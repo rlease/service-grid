@@ -25,14 +25,45 @@ const Hexagon = (size, midWidth, height, offsetx = 0, offsety = 0, pos) => {
 // Add ability to show routes betweeen hexes
 // TODO: Add some testing to this.
 class HexagonGrid extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super();
-    // Some state stuff is going to go here eventually
+    this.state = {
+      grid: {}
+    };
   }
+
+  componentWillMount() {
+    this.setState({ grid: this.getGrid() });
+  }
+
+  // Test cases:
+  // horizontally adjacent hexes
+  // vertically adjacent hexes
+  // hexes in the same column but separated by one row
+  // hexes along the outside of the grid (should keep path inside "border")
+  // ignore connecting hexes in separate grids for the meantime
+  connect = (startHex, endHex) => {
+    // draw path consisting of these three types of segments
+    // vertical edge of hex
+    // bottom left/top right edge of hex
+    // bottom right/top left edge of hex
+  };
+
+  getHex = (x, y) => {
+    const { rows, columns } = this.props;
+    if (x < 0 || x > rows - 1 || y < 0 || y > columns - 1) {
+      console.error(
+        `Attempting to get hex at (${x},${y}). Rows range from [0-${rows -
+          1}], columns range from [0-${columns - 1}].`
+      );
+    }
+
+    return this.state.grid[`${x},${y}`];
+  };
 
   getGrid = () => {
     const { size, rows, columns, spacing } = this.props;
-    let grid = [];
+    let grid = {};
     const midWidth = size * Math.cos(Math.PI / 6);
     const height = size / 2;
 
@@ -44,30 +75,40 @@ class HexagonGrid extends React.Component {
       for (let j = isOdd ? 1 : 0; j < columns; j++) {
         const xSpacing = (midWidth * 2 + spacing) * j;
         const offsetx = isOdd ? xSpacing - midWidth - spacing / 2 : xSpacing;
-        const hex = Hexagon(size, midWidth, height, offsetx, offsety, { x: i, y: j });
+        const hex = Hexagon(size, midWidth, height, offsetx, offsety, {
+          x: i,
+          y: j
+        });
 
-        grid.push(hex);
+        grid[`${i},${j}`] = hex;
       }
     }
+
     return grid;
-  }
+  };
 
   render() {
-    const grid = this.getGrid();
+    const { grid } = this.state;
+    const keys = Object.keys(grid);
+
     return (
-      <svg viewBox="0 0 100 100">{grid.map(hex => {
-        return (
-          <polygon
-           key={`${hex.position.x},${hex.position.y}`}
-           className="hex normal"
-           points={hex.points.map(point => `${point.x},${point.y}`).join(" ")}
-          />
-        );
-      })}
+      <svg viewBox="0 0 100 100">
+        {keys.map(key => {
+          const hex = grid[key];
+          return (
+            <polygon
+              key={`${hex.position.x},${hex.position.y}`}
+              className="hex normal"
+              points={hex.points
+                .map(point => `${point.x},${point.y}`)
+                .join(" ")}
+            />
+          );
+        })}
       </svg>
     );
   }
-};
+}
 
 HexagonGrid.defaultProps = {
   size: 5,
