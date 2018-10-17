@@ -16,7 +16,8 @@ const Hexagon = (size, midWidth, height, offsetx = 0, offsety = 0, pos) => {
       Point(offsetx + midWidth, offsety + height * 2 + size),
       Point(offsetx, offsety + height + size),
       Point(offsetx, offsety + height)
-    ]
+    ],
+    class: "normal"
   };
 };
 
@@ -28,12 +29,20 @@ class HexagonGrid extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      grid: {}
+      grid: {},
+      paths: {}
     };
   }
 
   componentWillMount() {
     this.setState({ grid: this.getGrid() });
+  }
+
+  componentDidMount() {
+    this.connect(
+      this.getHex(0, 0),
+      this.getHex(1, 1)
+    );
   }
 
   // Test cases:
@@ -47,7 +56,24 @@ class HexagonGrid extends React.Component {
     // vertical edge of hex
     // bottom left/top right edge of hex
     // bottom right/top left edge of hex
+
+    if (!startHex || !endHex) {
+      return;
+    }
+
+    // adjacent test
+    const grid = this.state.grid;
+    if (
+      Math.abs(startHex.position.x - endHex.position.x) <= 1 &&
+      Math.abs(startHex.position.y - endHex.position.y) <= 1
+    ) {
+      grid[this.getHexPositionString(startHex)].class += " connected";
+      grid[this.getHexPositionString(endHex)].class += " connected";
+      this.setState({ grid });
+    }
   };
+
+  getHexPositionString = hex => `${hex.position.x},${hex.position.y}`;
 
   getHex = (x, y) => {
     const { rows, columns } = this.props;
@@ -98,7 +124,7 @@ class HexagonGrid extends React.Component {
           return (
             <polygon
               key={`${hex.position.x},${hex.position.y}`}
-              className="hex normal"
+              className={`hex ${hex.class}`}
               points={hex.points
                 .map(point => `${point.x},${point.y}`)
                 .join(" ")}

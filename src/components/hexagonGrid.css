@@ -20,3 +20,8 @@
 	fill: yellow;
 	color: black;
 }
+
+.connected {
+	stroke: black;
+	stroke-width: 1;
+}
