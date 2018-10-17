@@ -41,7 +41,7 @@ class HexagonGrid extends React.Component {
   componentDidMount() {
     this.connect(
       this.getHex(0, 0),
-      this.getHex(1, 1)
+      this.getHex(0, 2)
     );
   }
 
@@ -61,16 +61,11 @@ class HexagonGrid extends React.Component {
       return;
     }
 
-    // adjacent test
     const grid = this.state.grid;
-    if (
-      Math.abs(startHex.position.x - endHex.position.x) <= 1 &&
-      Math.abs(startHex.position.y - endHex.position.y) <= 1
-    ) {
-      grid[this.getHexPositionString(startHex)].class += " connected";
-      grid[this.getHexPositionString(endHex)].class += " connected";
-      this.setState({ grid });
-    }
+
+    grid[this.getHexPositionString(startHex)].class += " connected";
+    grid[this.getHexPositionString(endHex)].class += " connected";
+    this.setState({ grid });
   };
 
   getHexPositionString = hex => `${hex.position.x},${hex.position.y}`;
