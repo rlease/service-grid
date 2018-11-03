@@ -27,21 +27,18 @@ const Hexagon = (size, midWidth, height, offsetx = 0, offsety = 0, pos) => {
 // TODO: Add some testing to this.
 class HexagonGrid extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
-      grid: {},
+      grid: this.getGrid(props),
       paths: {}
     };
-  }
-
-  componentWillMount() {
-    this.setState({ grid: this.getGrid() });
   }
 
   componentDidMount() {
     this.connect(
       this.getHex(0, 0),
-      this.getHex(0, 2)
+      this.getHex(0, 2),
+      this.props.spacing
     );
   }
 
@@ -51,7 +48,8 @@ class HexagonGrid extends React.Component {
   // hexes in the same column but separated by one row
   // hexes along the outside of the grid (should keep path inside "border")
   // ignore connecting hexes in separate grids for the meantime
-  connect = (startHex, endHex) => {
+  // what if startHex has a greater x,y value than endHex
+  connect = (startHex, endHex, spacing) => {
     // draw path consisting of these three types of segments
     // vertical edge of hex
     // bottom left/top right edge of hex
@@ -61,12 +59,45 @@ class HexagonGrid extends React.Component {
       return;
     }
 
+    const { min: minX, max: maxX } = this.getMinMax(
+      startHex.position.x,
+      endHex.position.x
+    );
+    const { min: minY, max: maxY } = this.getMinMax(
+      startHex.position.y,
+      endHex.position.y
+    );
+
+    for (let i = minX + 1; i < maxX; i++) {
+      // Draw a chevron
+      const hex = this.getHex(i, startHex.position.x + 1);
+      const path = this.getBorderPath(hex, "bottomLeft");
+
+      // TODO: Draw the rest of the stinking owl
+    }
+
     const grid = this.state.grid;
 
     grid[this.getHexPositionString(startHex)].class += " connected";
     grid[this.getHexPositionString(endHex)].class += " connected";
     this.setState({ grid });
   };
+
+  // Return a set of points that represents a border between hexes
+  // only border available right now is bottomLeft
+  getBorderPath = (hex, border, spacing) => {
+    const points = hex.points;
+    const borderSpacing = spacing / 4;
+
+    return [
+      Point(points[4].x, points[4].y + borderSpacing),
+      Point(points[4].x, points[4].y + 3 * borderSpacing),
+      Point(points[5].x - 3 * borderSpacing, points[5].y),
+      Point(points[5].x - borderSpacing, points[5].y)
+    ];
+  };
+
+  getMinMax = (x, y) => (x >= y ? { min: y, max: x } : { min: x, max: y });
 
   getHexPositionString = hex => `${hex.position.x},${hex.position.y}`;
 
@@ -82,12 +113,13 @@ class HexagonGrid extends React.Component {
     return this.state.grid[`${x},${y}`];
   };
 
-  getGrid = () => {
-    const { size, rows, columns, spacing } = this.props;
+  getGrid = props => {
+    const { size, rows, columns, spacing } = props;
     let grid = {};
     const midWidth = size * Math.cos(Math.PI / 6);
     const height = size / 2;
 
+    // TODO this definitely needs some comments
     for (let i = 0; i < rows; i++) {
       const isOdd = i % 2 === 1;
       const offsety = (size + size / 2 + spacing) * i;
