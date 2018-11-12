@@ -37,7 +37,7 @@ class HexagonGrid extends React.Component {
   componentDidMount() {
     this.connect(
       this.getHex(0, 0),
-      this.getHex(0, 2),
+      this.getHex(0, 3),
       this.props.spacing
     );
   }
@@ -71,12 +71,11 @@ class HexagonGrid extends React.Component {
     let paths = [];
     for (let i = minY + 1; i < maxY; i++) {
       // Draw a chevron
-      const hex = this.getHex(minX, startHex.position.y + 1);
+      const hex = this.getHex(startHex.position.x, i);
       const bl = this.getBorderPath(hex, "bottomLeft", spacing);
-      // const br = this.getBorderPath(hex, "bottomRight", spacing);
+      const br = this.getBorderPath(hex, "bottomRight", spacing);
 
-      console.log(hex, bl);
-      paths.push(bl);
+      paths.push(bl, br);
     }
 
     // TODO: Another loop for vertical paths
@@ -92,14 +91,24 @@ class HexagonGrid extends React.Component {
   // only border available right now is bottomLeft
   getBorderPath = (hex, border, spacing) => {
     const points = hex.points;
-    const borderSpacing = spacing / 4;
 
-    return [
-      Point(points[3].x, points[3].y + borderSpacing),
-      Point(points[3].x, points[3].y + 3 * borderSpacing),
-      Point(points[4].x - 2 * borderSpacing, points[4].y + 2 * borderSpacing),
-      Point(points[4].x - 2 * borderSpacing, points[4].y)
-    ];
+    if (border === "bottomLeft") {
+      return [
+        Point(points[3].x, points[3].y + spacing / 4),
+        Point(points[3].x, points[3].y + spacing),
+        Point(points[4].x - spacing / 2, points[4].y + spacing / 2),
+        Point(points[4].x - spacing / 2, points[4].y)
+      ];
+    }
+
+    if (border === "bottomRight") {
+      return [
+        Point(points[3].x, points[3].y + spacing / 4),
+        Point(points[3].x, points[3].y + spacing),
+        Point(points[2].x + spacing / 2, points[2].y + spacing / 2),
+        Point(points[2].x + spacing / 2, points[2].y)
+      ];
+    }
   };
 
   getMinMax = (x, y) => (x >= y ? { min: y, max: x } : { min: x, max: y });
