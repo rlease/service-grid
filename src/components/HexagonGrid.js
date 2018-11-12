@@ -30,7 +30,7 @@ class HexagonGrid extends React.Component {
     super(props);
     this.state = {
       grid: this.getGrid(props),
-      paths: {}
+      paths: []
     };
   }
 
@@ -68,19 +68,24 @@ class HexagonGrid extends React.Component {
       endHex.position.y
     );
 
-    for (let i = minX + 1; i < maxX; i++) {
+    let paths = [];
+    for (let i = minY + 1; i < maxY; i++) {
       // Draw a chevron
-      const hex = this.getHex(i, startHex.position.x + 1);
-      const path = this.getBorderPath(hex, "bottomLeft");
+      const hex = this.getHex(minX, startHex.position.y + 1);
+      const bl = this.getBorderPath(hex, "bottomLeft", spacing);
+      // const br = this.getBorderPath(hex, "bottomRight", spacing);
 
-      // TODO: Draw the rest of the stinking owl
+      console.log(hex, bl);
+      paths.push(bl);
     }
+
+    // TODO: Another loop for vertical paths
 
     const grid = this.state.grid;
 
     grid[this.getHexPositionString(startHex)].class += " connected";
     grid[this.getHexPositionString(endHex)].class += " connected";
-    this.setState({ grid });
+    this.setState({ grid, paths });
   };
 
   // Return a set of points that represents a border between hexes
@@ -90,10 +95,10 @@ class HexagonGrid extends React.Component {
     const borderSpacing = spacing / 4;
 
     return [
-      Point(points[4].x, points[4].y + borderSpacing),
-      Point(points[4].x, points[4].y + 3 * borderSpacing),
-      Point(points[5].x - 3 * borderSpacing, points[5].y),
-      Point(points[5].x - borderSpacing, points[5].y)
+      Point(points[3].x, points[3].y + borderSpacing),
+      Point(points[3].x, points[3].y + 3 * borderSpacing),
+      Point(points[4].x - 2 * borderSpacing, points[4].y + 2 * borderSpacing),
+      Point(points[4].x - 2 * borderSpacing, points[4].y)
     ];
   };
 
@@ -141,7 +146,7 @@ class HexagonGrid extends React.Component {
   };
 
   render() {
-    const { grid } = this.state;
+    const { grid, paths } = this.state;
     const keys = Object.keys(grid);
 
     return (
@@ -158,6 +163,12 @@ class HexagonGrid extends React.Component {
             />
           );
         })}
+        {paths.map((path, i) => (
+          <polygon
+            key={`path-${i}`}
+            points={path.map(point => `${point.x},${point.y}`).join(" ")}
+          />
+        ))}
       </svg>
     );
   }
