@@ -96,7 +96,7 @@ class HexagonGrid extends React.Component {
       return [
         Point(points[3].x, points[3].y + spacing / 4),
         Point(points[3].x, points[3].y + spacing),
-        Point(points[4].x - spacing / 2, points[4].y + spacing / 2),
+        Point(points[4].x - spacing / 2, points[4].y + (spacing * 3) / 4),
         Point(points[4].x - spacing / 2, points[4].y)
       ];
     }
@@ -105,7 +105,7 @@ class HexagonGrid extends React.Component {
       return [
         Point(points[3].x, points[3].y + spacing / 4),
         Point(points[3].x, points[3].y + spacing),
-        Point(points[2].x + spacing / 2, points[2].y + spacing / 2),
+        Point(points[2].x + spacing / 2, points[2].y + (spacing * 3) / 4),
         Point(points[2].x + spacing / 2, points[2].y)
       ];
     }
