@@ -37,7 +37,7 @@ class HexagonGrid extends React.Component {
   componentDidMount() {
     this.connect(
       this.getHex(0, 0),
-      this.getHex(0, 3),
+      this.getHex(1, 4),
       this.props.spacing
     );
   }
@@ -79,6 +79,12 @@ class HexagonGrid extends React.Component {
     }
 
     // TODO: Another loop for vertical paths
+    for (let j = minX + 1; j < maxX; j++) {
+      const hex = this.getHex(j, endHex.position.y);
+      const vert = this.getBorderPath(hex, "left", spacing);
+
+      paths.push(vert);
+    }
 
     const grid = this.state.grid;
 
@@ -107,6 +113,15 @@ class HexagonGrid extends React.Component {
         Point(points[3].x, points[3].y + spacing),
         Point(points[2].x + spacing / 2, points[2].y + (spacing * 3) / 4),
         Point(points[2].x + spacing / 2, points[2].y)
+      ];
+    }
+
+    if (border === "left") {
+      return [
+        Point(points[4].x + spacing / 4, points[4].y + spacing),
+        Point(points[4].x + (spacing * 3) / 4, points[4].y + spacing),
+        Point(points[5].x + (spacing * 3) / 4, points[5].y - spacing),
+        Point(points[5].x + spacing / 4, points[5].y - spacing)
       ];
     }
   };
