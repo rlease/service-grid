@@ -1,0 +1,27 @@
+.hex {
+	font-size: 12px;
+	color: white;
+}
+
+.hex:hover {
+	stroke: black;
+	stroke-width: 0.5;
+}
+
+.normal {
+	fill: green;
+}
+
+.error {
+	fill: red;
+}
+
+.warning {
+	fill: yellow;
+	color: black;
+}
+
+.connected {
+	stroke: black;
+	stroke-width: 1;
+}
